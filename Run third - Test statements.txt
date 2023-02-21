@@ -1,0 +1,77 @@
+--- RUN THIS BLOCKS OF TEST STATEMENTS TO SEE HOW FUNCTIONS AND PROCEDURES WORK
+-------------------------------------------------------------------------------
+--- getgetBookAuthor function
+Select isbn, getBookAuthor(isbn) from book;
+-------------------------------------------------------------------------------
+--- getMediaAuthor function
+Select issn, getMediaAuthor(issn) from media;
+-------------------------------------------------------------------------------
+--  getResType function
+Select "Resource Identifier", getResType("Resource Identifier") from "Resources Overview";
+-------------------------------------------------------------------------------
+--- getLatestLoanStartDate function
+Select uniqueitemidentifier, getLatestLoanStartDate(uniqueitemidentifier) from loan;
+-------------------------------------------------------------------------------
+--- getLoanDuration function
+Select uniqueitemidentifier, getLoanDuration(uniqueitemidentifier) from uniqueitem;
+-------------------------------------------------------------------------------
+--- calculateFine function
+Select memberid, uniqueitemidentifier, loanStartDate, calculateFine(memberid, uniqueitemidentifier, loanStartDate) from overdueloan;
+-------------------------------------------------------------------------------
+--- numberOfCopies function
+Select uniqueitemidentifier, nvl(isbn,issn), numberOfCopies(nvl(isbn,issn)) from uniqueitem;
+-------------------------------------------------------------------------------
+--- calculateTotalFine function
+Select memberid, calculateTotalFine(memberid) from overdueloan group by memberid;
+-------------------------------------------------------------------------------
+--- checkAvailability function
+Select uniqueitemidentifier, checkAvailability(uniqueitemidentifier) from uniqueitem;
+-------------------------------------------------------------------------------
+--- loanItem procedure
+execute loanItem(23, 200901222);
+-------------------------------------------------------------------------------
+--- returnLoan procedure
+execute returnLoan(2);
+-------------------------------------------------------------------------------
+--- payFines procedure
+execute payFines(120381301);
+select * from "Loans History";
+-------------------------------------------------------------------------------
+-- - grantLibraryAccess procedure
+Select * from "Library access overview" where "User number" = 112318907;
+execute grantLibraryAccess(112318907, 1);
+Select * from "Library access overview" where "User number" = 112318907;
+-------------------------------------------------------------------------------
+--- revokeLibraryAccess procedure
+Select * from "Library access overview" where "User number" = 112318907;
+execute revokeLibraryAccess(112318907, 1);
+Select * from "Library access overview" where "User number" = 112318907;
+-------------------------------------------------------------------------------
+--- dailyUpdate procedure
+execute dailyUpdate;
+select * from "Loans History";
+select * from "Users overview";
+-------------------------------------------------------------------------------
+--- RUN THIS BLOCKS OF TEST STATEMENTS TO DISPLAY THE VIEWS
+-------------------------------------------------------------------------------
+--- "Resources Overview" view
+Select * from "Resources Overview";
+-------------------------------------------------------------------------------
+--- "Items overview" view
+Select * from "Items overview";
+-------------------------------------------------------------------------------
+--- "Loans History" view
+Select * from "Loans History";
+-------------------------------------------------------------------------------
+--- "Fine Payments" view
+Select * from "Fine Payments";
+-------------------------------------------------------------------------------
+--- "Users overview" view
+Select * from "Users overview";
+-------------------------------------------------------------------------------
+--- "Library access overview" view
+Select * from "Library access overview";
+-------------------------------------------------------------------------------
+--- "Item locations" view
+Select * from "Item locations";
+-------------------------------------------------------------------------------

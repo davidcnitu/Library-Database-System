@@ -1,0 +1,758 @@
+drop table AccountType cascade constraints;
+drop table AccountState cascade constraints;
+drop table Members cascade constraints;
+drop table Staff;
+drop table Student;
+drop table PhoneNumber;
+drop table PostCodes cascade constraints;
+drop table Address cascade constraints;
+drop table MemberAddress;
+drop table Lbry cascade constraints;
+drop table Lbry_Access;
+drop table Shelf_Location cascade constraints;
+drop table ResourceAuthor;
+drop table Author cascade constraints;
+drop table Book cascade constraints;
+drop table Media cascade constraints;
+drop table Publisher cascade constraints;
+drop table Subject cascade constraints;
+drop table UniqueItem cascade constraints;
+drop table Loan cascade constraints;
+drop table OverdueLoan;
+
+
+create table AccountType (
+    AccountTypeId       number generated always as identity primary key,  
+    TypeValue           varchar2(20), -- Staff / Student / TA
+    MaxNoOfResources    number
+);
+
+create table AccountState (
+    AccountStateId      number generated always as identity primary key,
+    StateValue          varchar2(20) -- Active / Suspended / Closed
+);
+
+create table Members (
+    MemberId            number,
+    FirstName           varchar2(40) not null,
+    LastName            varchar2(40) not null,
+    Dob                 date,
+    Email               varchar2(40) not null,
+    AccountStateId      number not null,
+    AccountTypeId       number not null,
+    -- pk/fk
+    constraint pk_Member primary key (MemberId),
+    constraint fk_MemberType foreign key (AccountTypeId)
+        references AccountType (AccountTypeId),
+    constraint fk_MemberState foreign key (AccountStateId)
+        references AccountState (AccountStateId),
+    check (Email like '%@%.%')
+);
+
+create table Staff (
+    MemberId            number,
+    Department          varchar2(20),
+    JobRole             varchar2(20),
+    salary              number,
+    TA                  char(1), -- No boolean, input: (Y/N)
+    -- pk/fk
+    constraint pk_Staff primary key (MemberId),
+    constraint fk_Staff foreign key (MemberId)
+        references Members (MemberId) on delete cascade
+); 
+
+create table Student (
+    MemberId            number,
+    Programme           varchar2(100),
+    EducationLevel      varchar2(10),
+    YearOfStudy         varchar2(2),
+     -- pk/fk
+    constraint pk_Student primary key (MemberId),
+    constraint fk_Student foreign key (MemberId)
+        references Members (MemberId) on delete cascade
+); 
+
+create table PhoneNumber (
+    MemberId        number,
+    CountryCode     varchar2(10),
+    PNumber         varchar2(20),
+    PhoneType       varchar2(30),
+    --pk/fk
+    constraint pk_PhoneNumber primary key (MemberId, CountryCode, PNumber, PhoneType),
+    constraint fk_PhoneNumber foreign key (MemberId)
+           references Members (MemberId) on delete cascade
+);
+
+create table PostCodes (
+    PostCode       varchar2(10),
+    City           varchar2(30) not null,
+    Country        varchar2(30) not null,
+    --pk/fk
+    constraint pk_PostCodes primary key (PostCode)
+);
+
+create table Address (
+    AddressId       number generated always as identity primary key,
+    Street          varchar2(30) not null,
+    Building        varchar2(30),
+    Flat            varchar2(10),
+    PostCode        varchar2(10) not null,
+    --pk/fk
+    constraint fk_PostCode foreign key (PostCode)
+        references PostCodes (PostCode)
+);
+
+create table MemberAddress (
+    MemberId        number,
+    AddressId       number,
+    AddressType     varchar2(30),
+    --pk/fk
+    constraint pk_MemberAddress primary key (MemberId, AddressId, AddressType),
+    constraint fk_MemberAddress1 foreign key (MemberId)
+        references Members (MemberId) on delete cascade,
+    constraint fk_MemberAddress2 foreign key (AddressId)
+        references Address (AddressId) on delete cascade
+);
+
+create table Lbry (
+    LibraryId       number generated always as identity primary key,
+    LibraryName     varchar2(50) not null,
+    AddressId       number,
+    --fk
+    constraint fk_Library foreign key (AddressId)
+        references Address (AddressId)
+);
+
+create table Lbry_Access (
+    MemberId        number not null,
+    LibraryId       number not null,
+    AccessId        VARCHAR2 (50),
+    --pk/fk
+    constraint pk_Lbry_Access primary key (MemberId, LibraryId),
+    constraint fk_Lbry_Access1 foreign key (LibraryId)
+        references LBRY (LibraryId) on delete cascade,
+    constraint fk_Lbry_Access2 foreign key (MemberId)
+        references Members (MemberId) on delete cascade
+);
+
+create table Shelf_location (
+    ShelfId         varchar2 (50),
+    LibraryId       number,
+    Floor           number,
+    Room            varchar2 (10),
+    ClassNumber     varchar2 (20),
+    RowNumber       varchar2 (20),
+    Shelf           varchar2 (10),
+    --pf/fk
+    constraint pk_Shelf primary key (ShelfId),
+    constraint fk_Shelf foreign key (LibraryId)
+        references Lbry (LibraryId),
+    constraint unicity Unique (LibraryId, Floor, Room, RowNumber, Shelf)
+);
+
+create table Author (
+    AuthorId    		number generated always as identity primary key, 
+    AuthorFirstname 	varchar2(50), 
+    AuthorLastname 	    varchar2(50),
+
+    check (((AuthorFirstName) is not null) or ((AuthorLastName) is not null))
+);
+
+create table Publisher(
+    PublisherId         number generated always as identity primary key,
+    PublisherName       varchar2(100) not null, 
+    PublisherCountry 	varchar(57)
+);
+
+
+create table Subject(
+    SubjectNumber       number generated always as identity primary key, 
+    SubjectName         varchar2(50) not null
+);
+
+
+create table Book ( 
+    ISBN                varchar(13), 
+    BTitle         		varchar2(150) not null,  
+    BEdition   		    varchar2(40),  
+    PublisherId		    number,  
+    BLanguage 	 	    varchar2(20) not null, 
+    PublicationYear 	date, 
+    NumberOfPages	    number, 
+    SubjectNumber 	    number,
+    --pk/fk
+    constraint pk_Book primary key (ISBN), 
+    constraint fk_Book_PublisherId foreign key (PublisherId) references Publisher,
+    constraint fk_Book_SubjectNumber foreign key (SubjectNumber) references Subject
+);
+
+create table Media (
+    ISSN            varchar2(8),
+    MTitle          varchar2(100) not null, 
+    MEdition        varchar2(40), 
+    PublisherId		number, 
+    MLanguage  		varchar2(20) not null, 
+    MediaType 		varchar2(7),
+    Runtime 		varchar2 (16),
+    ReleaseDate 	date, 
+    SubjectNumber 	number,
+    --pk/fk
+    constraint pk_Media	primary key (ISSN),
+    constraint fk_Media_PublisherId foreign key (PublisherId) references Publisher,
+    constraint fk_Media_SubjectNumber foreign key (SubjectNumber) references Subject
+);
+
+create table ResourceAuthor(
+    ISBN            varchar2(13),
+    ISSN            varchar2(13),
+    AuthorId        number,
+    --pk/fk
+    constraint primarykey unique (ISBN, ISSN, AuthorId),
+    constraint fk_ResourceAuthor_AuthorId foreign key (AuthorId) references Author on delete cascade,
+    constraint fk_ResourceAuthor_ISBN foreign key (ISBN) 
+        references Book on delete cascade,
+    constraint fk_ResourceAuthor_ISSN foreign key (ISSN) 
+        references Media on delete cascade,
+    check ((ISBN is null and ISSN is not null) or (ISSN is null and ISBN is not null))
+);
+
+create table UniqueItem(
+    UniqueItemIdentifier    number generated always as identity primary key,
+    ISBN                    varchar2(13),
+    ISSN                    varchar2(8),
+    LocationId              varchar2(10) not null,
+    Loanduration            interval day to second not null,
+    --fk
+    constraint fk_Book_ISBN foreign key (ISBN) 
+        references Book (ISBN) on delete cascade,
+    constraint fk_Media_ISSN foreign key (ISSN) 
+        references Media (ISSN) on delete cascade,
+    check ((ISBN is null and ISSN is not null) or (ISSN is null and ISBN is not null))
+);
+
+create table Loan (
+    MemberId                number,
+    UniqueItemIdentifier    number, 
+    LoanStartDate           timestamp with local time zone default on null localtimestamp,
+    LoanReturnDate          timestamp default null,
+    -- pk/fk
+    constraint pk_Loan primary key (MemberId, UniqueItemIdentifier, LoanStartDate),
+    constraint fk_Loan_1 foreign key (UniqueItemIdentifier)
+        references UniqueItem (UniqueItemIdentifier) on delete cascade, 
+    constraint fk_Loan_2 foreign key (MemberId)
+        references Members (MemberId) on delete cascade
+);
+
+create table OverdueLoan (
+    MemberId                number,
+    UniqueItemIdentifier    number, 
+    LoanStartDate           timestamp with local time zone default on null localtimestamp,
+    FineResolvedDate        timestamp default null,
+    LoanTotalFine           number default null, 
+    -- pk/fk
+    constraint pk_OverdueLoan primary key (MemberId, UniqueItemIdentifier, LoanStartDate),
+    constraint fk_OverdueLoan_1 foreign key (MemberId, UniqueItemIdentifier, LoanStartDate)
+        references Loan (MemberId, UniqueItemIdentifier, LoanStartDate) on delete cascade
+);
+
+-- Functions 
+-------------------------------------------------------------------------------------
+
+-- Create getBookAuthor that retrieves author based on ISBN
+
+Create or replace function getBookAuthor
+  (URI in varchar2)
+  return varchar2
+    is
+  Authors varchar2(500);
+Begin
+  Select listagg(Author, ', ' ) within group (order by Author) into Authors from (Select Book.ISBN, (AuthorFirstname || ' ' || AuthorLastName) Author from Book 
+    left join ResourceAuthor on ResourceAuthor.ISBN = Book.ISBN left join Author on ResourceAuthor.Authorid = Author.AuthorID) where ISBN = URI group by ISBN order by ISBN;
+    return Authors;
+End;
+/
+
+-- Create getMediaAuthor that retrieves author based on ISBN
+
+Create or replace function getMediaAuthor
+  (URI in varchar2)
+  return varchar2
+    is
+  Authors varchar2(500);
+Begin
+  Select listagg(Author, ', ' ) within group (order by Author) into Authors from (Select Media.ISSN, (AuthorFirstname || ' ' || AuthorLastName) Author from Media 
+    left join ResourceAuthor on ResourceAuthor.ISSN = Media.ISSN 
+    left join Author on ResourceAuthor.Authorid = Author.AuthorID) 
+    where ISSN = URI group by ISSN order by ISSN;
+  Return Authors;
+End;
+/
+
+-- Create getResType that retrieves resource type
+
+Create or replace function getResType
+  (URI in varchar2)
+  return varchar2
+    is
+  ResType varchar2(50);
+Begin
+  Select nvl(mediatype, 'Book') into ResType from media full outer join book on media.issn = book.isbn where URI = NVL(media.issn, book.isbn); 
+    return ResType;
+End;
+/
+
+-- Create getLatestLoanStartDate that retrieves the latest LoanStartDate based on UniqueItemIdentifier
+
+Create or replace function getLatestLoanStartDate
+  (UII in number)
+  return timestamp
+    is
+  noOfRecords number;
+  StartDate timestamp;
+Begin
+  Select count(*) into noOfRecords from Loan where UniqueItemIdentifier = UII and LoanReturnDate is null;
+  if noOfRecords > 0 then
+    Select LoanStartDate into StartDate from Loan where UniqueItemIdentifier = UII and LoanReturnDate is null;
+  else StartDate := null;
+  end if;
+  return StartDate;
+End;
+/
+
+--Create getLoanDuration function that returns the loan duration of an item
+
+Create or replace function getLoanDuration
+  (UII in number)
+  return interval day to second
+    is
+  loanDuration interval day to second;
+Begin
+      select uniqueItem.loanDuration into loanDuration from uniqueitem where uniqueitem.uniqueitemidentifier = UII; 
+    return loanDuration;
+End;
+/
+
+--Create calculateFine function that returns the fine ammount per overdue loan instance
+
+Create or replace function calculateFine
+  (membernum in number, UII in number, loansdate in timestamp)
+  return number
+    is
+  fine number;
+Begin
+      select extract(day from diff) into fine
+         from (select (current_timestamp - loanstartdate - getLoanDuration(UII)) diff
+               from overdueloan where uniqueitemidentifier = UII and memberid = membernum and loanstartdate = loansdate and (current_timestamp - loanstartdate) > getLoanDuration(UII)); 
+    return fine;
+End;
+/
+
+-- Create numberOfCopies function that returns the number of available copies of a specific resource.
+
+Create or replace function numberOfCopies
+  (URI in number)
+  return number
+    is
+  copies number;
+  loaned number;
+Begin
+      select count(*) into loaned from loan left join uniqueitem on loan.uniqueitemidentifier = uniqueitem.uniqueitemidentifier where (isbn = URI or issn = URI) and loanreturndate is null;
+      select count(*) into copies from uniqueitem where isbn = URI or issn = URI ;
+    return copies-loaned;
+End;
+/
+
+-- Create checkAvalability function that returns the availability status of an item.
+
+Create or replace function checkAvailability
+  (UII in number)
+  return varchar2
+    is
+  status number;
+  statusMessage varchar2(10);
+Begin
+    select count(*) into status from loan where UII = loan.uniqueitemidentifier and loanreturndate is null;
+    
+    if (getLoanDuration(UII) = INTERVAL '0' DAY) then
+        return 'Library use only';
+    elsif status = 1 then
+         return 'Loaned';
+    elsif status = 0 then
+        return 'Available';
+    end if;
+End;
+/
+
+--Create calculateTotalFine function that calculates fines per member pay dates.
+
+Create or replace function calculateTotalFine
+(membernum in number)
+return number
+is
+currentTotalFines number;
+Begin
+select sum (calculateFine(memberid, uniqueitemidentifier, loanstartdate)) into currentTotalFines from overdueloan where memberid = membernum and fineresolveddate is null group by memberid;
+return currentTotalFines;
+End;
+/
+
+-- Procedures
+-------------------------------------------------------------------------------------
+
+--Create returnLoan procedure that updates LoanReturnDate based on UUI
+
+Create or replace procedure returnLoan
+  (UII number)
+  is 
+  Startdate timestamp;
+    Begin
+    Startdate := getLatestLoanStartDate(UII);
+    If Startdate is not null then
+        update Loan
+        set    Loan.Loanreturndate = current_timestamp
+        where  Loan.uniqueitemidentifier = UII and Loan.loanstartdate = Startdate;
+        dbms_output.put_line('Item ' || UII || ' returned successfully!');
+    Else dbms_output.put_line('This item is not currently loaned!');
+    End if;
+    End;
+/
+
+-- Create updateLoans procedure that populates the Overdue Loans table with new overdue loans 
+
+Create or replace procedure updateLoans
+    (membernum in number)
+        is 
+    constraintcheck number;
+    cursor loans
+        is
+    select MemberId, UniqueItemIdentifier, LoanStartDate from loan where (current_timestamp - LoanStartDate) > getLoanDuration(UniqueItemIdentifier) and loanReturnDate is null and memberid = membernum;
+    begin
+        for eachrow in loans
+        loop
+    	    select count(*) into constraintcheck from overdueloan where MemberId = eachrow.MemberId and UniqueItemIdentifier = eachrow.UniqueItemIdentifier and LoanStartDate = eachrow.LoanStartDate;
+    	    if constraintcheck = 0 then
+                Insert into OverDueLoan (MemberId, UniqueItemIdentifier, LoanStartDate)
+                    values(eachrow.MemberId, eachrow.UniqueItemIdentifier, eachrow.LoanStartDate);
+            end if;
+        end loop;
+    end;
+/
+
+-- Create payFine procedure that resolves all the overdue loans for a member. 
+-- This involves returning the overdue loans as well as paying all outstanding fines.
+
+Create or replace procedure payFines
+    (membernum number)
+        is 
+    fine number;
+    memberstatus number;
+    cursor loans
+        is
+    select 
+        uniqueitemidentifier, loanstartdate
+    from 
+        overdueloan 
+    where memberid = membernum and fineresolveddate is null;
+    begin
+	updateLoans(membernum);
+        for eachrow in loans
+        loop
+        fine := calculateFine(membernum, eachrow.uniqueitemidentifier, eachrow.loanstartdate);
+        update OverDueLoan
+        set    OverDueLoan.FineResolvedDate = current_timestamp, OverDueLoan.loantotalfine = fine
+        where  OverDueLoan.memberid = memberNUM and OverDueLoan.uniqueitemidentifier = eachrow.uniqueitemidentifier and OverDueLoan.loanstartdate = eachrow.loanstartdate and OverDueLoan.FineResolvedDate is null;
+        returnLoan(eachrow.UniqueItemIdentifier);
+        end loop;
+        Select members.AccountStateId into memberstatus from members where members.MemberId = membernum;
+        if memberstatus = 2 then
+        update members set members.AccountStateId = 1 where members.MemberId = membernum;
+        end if;
+	
+    end;
+/
+
+-- Create loanItem procedure that populates the loan table with member to loan associations.
+-- The procedure checks that the member can loan the item and that the item can be loaned.
+
+Create or replace procedure loanItem
+  (UII number, membernum number)
+  is 
+  lastestReturnDate timestamp;
+  memberstatus varchar2(20);
+  resourcesLoaned number;
+  maxResources number;
+  libraryloc number;
+  libraryAccess varchar2(10);
+  libName varchar2(50);
+    begin
+ 
+        lastestReturnDate := getLatestLoanStartDate(UII);
+        
+        select StateValue into memberstatus from members 
+        left join AccountState on members.AccountStateId = AccountState.AccountStateId where members.memberid = membernum;
+        
+        select count(*) into resourcesLoaned from loan where loan.memberid = membernum and loan.loanreturndate is null;
+        
+        select maxNoOfResources into maxResources from members
+        left join AccountType on members.AccountTypeId = AccountType.AccountTypeId where members.memberid = membernum;
+        
+        Select libraryid into libraryloc from uniqueitem left join shelf_location on uniqueitem.locationid = shelf_location.shelfid where uniqueitem.uniqueitemidentifier = UII;
+        Select libraryName into libName from lbry where lbry.libraryid = libraryloc;
+        Select accessid into libraryAccess from Lbry_Access where Lbry_Access.memberId = membernum and Lbry_Access.libraryid = libraryloc;
+        
+        
+        If (memberstatus like 'Active') then   
+            If (libraryAccess = 'True') Then
+                If (getLoanDuration(UII) > interval '0' day) Then
+                    If (lastestReturnDate is null) Then
+                        If (resourcesLoaned < maxResources) then
+                            Insert into Loan (LoanStartDate, MemberId, UniqueItemIdentifier) values(current_timestamp, membernum, UII);
+                        Else dbms_output.put_line('This member has already booked the maximum number of resources allowed!');
+                        End if;
+                    Else dbms_output.put_line('This resource is currently booked by another member!');
+                    End if;
+                Else dbms_output.put_line('This resource can only be used within the library!');
+                End if;
+            Else dbms_output.put_line('This member cannot book items from the ' || libName || '!');
+            End if;
+        Else dbms_output.put_line('This member has a ' || lower(memberstatus) || ' account!');
+        End if;
+    end;
+/
+
+-- Create updateMemberStatus procedure that checks if a member meets the criteria to be suspended and suspends them if appropriate.
+
+Create or replace procedure updateMemberStatus
+  is 
+  fine number;
+  memberstatus number;
+  cursor overdueloans
+  is
+    select MemberId, Sum(calculateFine(MemberId, uniqueitemidentifier, loanstartdate)) totalFines from overdueloan where fineresolveddate is null group by memberid;
+    begin
+        for eachrow in overdueloans
+        loop
+            Select members.AccountStateId into memberstatus from members where members.MemberId = eachrow.MemberId;
+            if (eachrow.totalFines > 10) and (memberstatus = 1) then
+            update members set members.AccountStateId = 2 where members.MemberId = eachrow.MemberId;
+            end if;
+        end loop;
+    end;
+/
+
+-- Create grantLibraryAccess procedure that grants access to specific libraries to specific members.
+
+Create or replace procedure grantLibraryAccess
+	(membernum IN number, librarynum IN number)
+        IS 
+    accesslvl varchar2(10);
+    BEGIN
+        Select accessid into accesslvl from lbry_access where memberid = membernum and  libraryid = librarynum;
+        if accesslvl = 'False' then
+            Update lbry_access set accessid = 'True' where memberid = membernum and  libraryid = librarynum;
+        else
+            dbms_output.put_line('This member already has access to this library.');
+            end if;
+    END;
+/
+
+-- Create revokeLibraryAccess procedure that revokes access to specific libraries to specific members.
+Create or replace procedure revokeLibraryAccess 
+	(membernum IN number, librarynum IN number)
+        IS 
+    accesslvl varchar2(10);
+    BEGIN
+        Select accessid into accesslvl from lbry_access where memberid = membernum and  libraryid = librarynum;
+        if accesslvl = 'True' then
+            Update lbry_access set accessid = 'False' where memberid = membernum and  libraryid = librarynum;
+        else
+            dbms_output.put_line('This member already has access to this library.');
+            end if;
+    END;
+/
+
+-- Triggers
+-------------------------------------------------------------------------------------
+
+-- Create checkDobIntegrity trigger that checks the integrity of the date of birth (Dob) attribute value in the Members table.
+-- It ensures that  member's date of birth is after Jan 2nd, 1903 (currently oldest living person) and over 15 years old.
+
+Create or replace trigger checkDobIntegrity
+    before insert or update on Members
+        for each row
+    begin
+    if( :new.Dob < date '1903-01-02' or
+        :new.Dob > sysdate - 365*15 )
+    then
+        raise_application_error(-00001, 'The member date of birth must be after Jan 2nd, 1903 and over 15 years old');
+    end if;
+end;
+/
+
+-- Create populateLibraryAccess trigger so that when a new member is inserted into the members table, 
+-- their access to all libraries is initiated to false.
+
+Create or replace trigger populateLibraryAccess
+    after insert
+    on Members
+    for each row
+declare
+    cursor libraries
+        IS
+    select libraryid from lbry;
+begin
+    for lib in libraries
+    loop
+    Insert into lbry_access values(:new.memberid, lib.libraryid, 'False');
+    end loop;
+end;
+/
+
+-- Create maxLoanNotification trigger that sends a notification to a user when they have loaned the maximum ammount of resources.
+-- Additionally, it displays a notification everytime a member loans an item, showing how many resources they currently have loaned.
+
+create or replace trigger maxLoanNotification
+    before insert
+    on Loan
+    for each row
+declare
+    maxResources number(2);
+    resourcesLoaned number;
+begin
+    -- get user's max possible number of resources 
+    select maxNoOfResources into maxResources from Members
+    left join AccountType on Members.AccountTypeId = AccountType.AccountTypeId where Members.Memberid = :new.MemberId;
+    -- get user's current number of resources loaned
+    select count(*) into resourcesLoaned from Loan where Loan.MemberId = :new.MemberId and Loan.LoanReturnDate is null;
+    if (resourcesLoaned + 1 = maxResources) then
+        dbms_output.put_line('Item succesfully loaned! Member has now loaned the maximum amount of resources!');
+    else
+        dbms_output.put_line('Item succesfully loaned! Member has now loaned ' || (resourcesLoaned + 1) || ' resources!');
+    end if;
+end;
+/
+
+-- Views
+-------------------------------------------------------------------------------------
+
+-- Create Resources Ovreview view that displays the resources available within the library and some other helpful attributes.
+
+Create or replace view "Resources Overview" as
+    Select * from
+        (Select ISBN "Resource Identifier", Btitle "Title", getBookAuthor(ISBN) "Authors", SubjectName "Subject", getResType(ISBN) "Resource Type", numberOfCopies(ISBN) "Number of available copies" from Book 
+	left join Subject on Subject.subjectnumber = Book.subjectnumber) 
+    union 
+    Select * from
+        (select ISSN, Mtitle, getMediaAuthor(ISSN), SubjectName "Subject", getResType(ISSN), numberOfCopies(ISSN) FROM Media
+	left join Subject on Subject.subjectnumber = Media.subjectnumber);
+
+-- Create Unique Items Overview view that displays resources found in the library and their availability.
+
+Create or replace view "Items overview" as	
+    Select uniqueitem.uniqueitemidentifier "Item identifier", nvl(uniqueitem.isbn, uniqueitem.issn) "Resource identifier", 
+        ('"' || "Title" || '"' || ' by ' || "Authors") "Resource", "Resource Type", locationDetails.libraryName "Location",
+        checkAvailability(uniqueitem.uniqueitemidentifier) "Availability" from uniqueitem 
+        left join "Resources Overview" on nvl(uniqueitem.isbn, uniqueitem.issn) = "Resources Overview"."Resource Identifier"
+        left join (Select libraryName, shelfid from shelf_location 
+            left join lbry on shelf_location.libraryid = lbry.libraryid) locationDetails on locationId = locationDetails.shelfid order by "Item identifier";
+
+-- Create Active Loans view that displays active loans.
+
+Create or replace view "Active loans" as
+select loan.memberid "User number", (firstname || ' ' || lastname) "User", ('UII:' || loan.uniqueItemIdentifier || '  --  ' ||"Resource") "Item",
+    to_char(loanStartDate,'DD Mon YYYY HH24:MI') "Start Date", to_char(loan.loanstartDate + getLoanDuration(loan.uniqueItemIdentifier), 'DD Mon YYYY HH24:MI') "Due date",
+    (Case when ((current_timestamp - LoanStartDate) > getLoanDuration(UniqueItemIdentifier)) then 'True' else 'False' end) "Overdue" from loan 
+    left join members on loan.memberid = members.memberid
+    left join "Items overview" on loan.uniqueItemIdentifier = "Items overview"."Item identifier"
+    where loanReturnDate is null;
+
+-- Create Loans History view that displays the loan history.
+
+Create or replace view "Loans History" AS
+select loan.memberid "User number", (firstname || ' ' || lastname) "User", ('UII:' || loan.uniqueItemIdentifier || '  --  ' ||"Resource") "Item",
+    to_char(loan.loanStartDate,'DD Mon YYYY HH24:MI') "Start Date", to_char(loan.loanreturnDate,'DD Mon YYYY HH24:MI') "Return Date",
+    (Case when ((loan.loanReturnDate - loan.LoanStartDate) > getLoanDuration(loan.UniqueItemIdentifier)) then 'True' else 'False' end) "Was Overdue" 
+    ,overdueloan.loantotalFine "Fine amount paid" 
+    from loan 
+    left join members on loan.memberid = members.memberid
+    left join "Items overview" on loan.uniqueItemIdentifier = "Items overview"."Item identifier"
+    left join overdueloan on loan.uniqueItemIdentifier = overdueloan.uniqueItemIdentifier
+    and (loan.memberid = overdueloan.memberid) and (loan.loanstartdate = overdueloan.loanstartdate)
+    where loanReturnDate is not null;
+    
+-- Create Fine Payments view that displays payments by user.
+
+Create or replace view "Fine Payments" as
+    select overdueloan.memberid "User number", (firstname || ' ' || lastname) "User", nvl(sum(loantotalfine),
+        calculateTotalFine(overdueloan.memberid)) "Fine amount", nvl(to_char(fineresolveddate, 'DD Mon YYYY HH24:MI'), 'Outstanding') "Payment"
+    from overdueloan left join members on overdueloan.memberid = members.memberid
+        group by to_char(fineresolveddate, 'DD Mon YYYY HH24:MI'), overdueloan.memberid, (firstname || ' ' || lastname)
+        order by "Payment" DESC;
+
+-- Create Users overview view that displays user details
+Create or replace view "Users overview" AS
+    select memberid "User number", (firstname || ' ' || lastname) "User", email "Email", typevalue "Account type", statevalue "Account state" from members 
+    left join accountstate on members.accountstateid = accountstate.accountstateid 
+    left join accounttype on members.accounttypeid = accounttype.accounttypeid;
+
+-- Create Library access overview that displays users and their access level to different libraries
+Create or replace view "Library access overview" AS
+    select lbry_access.memberid "User number", (firstname || ' ' || lastname) "User", lbry_access.libraryid "Library number", libraryname "Library name", accessid "Access" from lbry_access 
+    left join members on members.memberid = lbry_access.memberid 
+    left join lbry on lbry_access.libraryid = lbry.libraryid;
+
+-- Create Item locations view that displays the locations of specific items within the library
+Create or replace view "Item locations" AS
+    Select uniqueitem.uniqueitemidentifier "Item identifier", ('"' || "Title" || '"' || ' by ' || "Authors") "Resource", "Resource Type", 
+    (locationDetails.libraryName || ', floor ' || locationDetails.floor || ', room ' || locationDetails.room || ', row ' || locationDetails.rownumber || ', shelf ' || locationDetails.shelf) "Location",
+        checkAvailability(uniqueitem.uniqueitemidentifier) "Availability" from uniqueitem 
+        left join "Resources Overview" on nvl(uniqueitem.isbn, uniqueitem.issn) = "Resources Overview"."Resource Identifier"
+        left join (Select libraryName, floor, room, rownumber, shelf,  shelfid from shelf_location 
+            left join lbry on shelf_location.libraryid = lbry.libraryid) locationDetails on locationId = locationDetails.shelfid order by "Item identifier";
+
+-- The sendLoanExpiryNotification trigger and the dailyUpdate procedure need views in order to run.
+-------------------------------------------------------------------------------------
+
+-- Create sendLoanExpiryNotification trigger that informs the user when a loan has expired and needs to be returned.
+
+Create or replace trigger sendLoanExpiryNotification
+    after insert
+    on overdueloan
+    for each row
+declare
+username varchar2(100);
+res varchar2(500);
+begin
+    Select (firstname || ' ' || lastname) into username from members where members.memberid = :new.memberid;
+    Select "Resource" into res from "Items overview" where "Item identifier" = :new.uniqueitemidentifier;
+    dbms_output.put_line('Hi ' || username || ' (member id: ' || :new.memberid || '). Your loan for ' || res || ' has expired. If it is not returned within 24 hours, a charge will be incurred');
+end;
+/
+
+-- Create dailyUpdate that performs daily updates on the following parameters:
+-- New loans that are overdue will be added to the OverdueLoan table
+-- Members with fines exceeding the maximum allowed amount will be suspended
+-- Members with loans due within 1 day will be notified
+
+Create or replace procedure dailyUpdate
+  is 
+  cursor memberfromloans
+  is
+    select distinct MemberId  from loan where loanreturndate is null;
+ cursor distinctloans
+  is
+    select "User number", "User", "Item", "Due date" from "Active loans" where "Overdue" = 'False';    
+    begin
+        for eachrow in memberfromloans
+        loop
+            updateloans(eachrow.memberid);
+        end loop;
+        updatememberstatus;
+        for eachrow in distinctloans
+        loop
+        if (((sysdate - to_date(eachrow."Due date", 'dd:mm:yyyy hh24:mi')) >= -1)) then
+        dbms_output.put_line('Hi ' || eachrow."User" || ' (member id: ' || eachrow."User number" || '). Your loan for ' || regexp_substr(eachrow."Item", ' "[^,]+', 1, 1) || ' will expire in less than a day!');
+        end if;
+        end loop;
+    end;
+/

@@ -1,0 +1,341 @@
+-- Test Data
+-------------------------------------------------------------------------------------
+--Populate Author table
+
+insert into Author(AuthorFirstname, AuthorLastname) values ('Alexey', 'Gorodentsev');
+insert into Author(AuthorFirstname, AuthorLastname) values ('Elaine', 'Nicpon Marieb');
+insert into Author(AuthorFirstname, AuthorLastname) values ('Judith', 'Bell');
+insert into Author(AuthorFirstname, AuthorLastname) values ('F. Scott', 'Fitzgerald');
+insert into Author(AuthorFirstname, AuthorLastname) values ('John', 'Medina');
+insert into Author(AuthorFirstname, AuthorLastname) values ('Charles', 'Severance');
+insert into Author(AuthorFirstname, AuthorLastname) values ('Gaël', 'Crépieux');
+insert into Author(AuthorFirstname, AuthorLastname) values ('Caroline', 'Spérandio');
+insert into Author(AuthorFirstname, AuthorLastname) values ('David', 'Attenborough');
+insert into Author(AuthorFirstname, AuthorLastname) values ('Tony', 'Robinson');
+insert into Author(AuthorFirstname, AuthorLastname) values ('Edward', 'Burger');
+insert into Author(AuthorFirstname, AuthorLastname) values ('John', 'Campton');
+insert into Author(AuthorFirstname, AuthorLastname) values ('Lingo Mastery', null);
+insert into Author(AuthorFirstname, AuthorLastname) values ('Robert C.', 'Martin');
+insert into Author(AuthorFirstname, AuthorLastname) values ('Micah', 'Martin');
+insert into Author(AuthorFirstname, AuthorLastname) values ('James W.', 'Newkirk');
+insert into Author(AuthorFirstname, AuthorLastname) values ('David', 'Clason');
+insert into Author(AuthorFirstname, AuthorLastname) values ('Wilfried', ' Lemahieu');
+insert into Author(AuthorFirstname, AuthorLastname) values ('Seppe vanden', 'Broucke');
+
+--Populate Publisher table
+
+insert into Publisher(PublisherName, PublisherCountry) values ('Springer', 'USA');
+insert into Publisher(PublisherName, PublisherCountry) values ('Benjamin-Cummings Pub Co', 'USA');
+insert into Publisher(PublisherName, PublisherCountry) values ('Open University Press', 'UK');
+insert into Publisher(PublisherName, PublisherCountry) values ('Independently published', 'USA');
+insert into Publisher(PublisherName, PublisherCountry) values ('CreateSpace Independent Publishing Platform', 'USA');
+insert into Publisher(PublisherName, PublisherCountry) values ('The Best Media Publisher', 'USA');
+insert into Publisher(PublisherName, PublisherCountry) values ('BBC Studio', 'UK');
+insert into Publisher(PublisherName, PublisherCountry) values ('Lingo Mastery', 'Italy');
+insert into Publisher(PublisherName, PublisherCountry) values ('Pearson Education', 'UK');
+insert into Publisher(PublisherName, PublisherCountry) values ('Addison-Wesley', 'USA');
+insert into Publisher(PublisherName, PublisherCountry) values ('BBC Books', 'UK');
+
+--Populate Subject table
+
+insert into Subject(SubjectName) values ('Mathematics');
+insert into Subject(SubjectName) values ('Sciences');
+insert into Subject(SubjectName) values ('Social Sciences');
+insert into Subject(SubjectName) values ('English Literature');
+insert into Subject(SubjectName) values ('French Language');
+insert into Subject(SubjectName) values ('Italian Language');
+insert into Subject(SubjectName) values ('Computer Science');
+insert into Subject(SubjectName) values ('Anatomy');
+insert into Subject(SubjectName) values ('Self Development');
+insert into Subject(SubjectName) values ('Biology');
+insert into Subject(SubjectName) values ('History');
+
+--Populate Book table
+
+insert into Book values ('9783319508528', 'Algebra II: Textbook for Students of Mathematics',
+'1st', 1, 'English', to_date('2017/01/03','yyyy/mm/dd'), 385, 1);
+insert into Book values ('9780131934818', 'Essentials of Human Anatomy and Physiology',
+null, 2, 'English', to_date('2005/02/06','yyyy/mm/dd'), 288, 8);
+insert into Book values ('9780335215041', 'Doing Your Research Project: A Guide for First-Time Researchers in Education, Health and Social Science',
+'4th', 3, 'English', to_date('2005/06/02','yyyy/mm/dd'), 288, 3 );
+insert into Book values ('9798537197515', 'This Side of Paradise',
+null, 4, 'English', to_date('2021/01/01','yyyy/mm/dd'), 212, 4 );
+insert into Book values ('9798558182569', '12 Principles For Surviving and Thriving at Work, Home, and School',
+null, 4, 'English', to_date('2020/03/03','yyyy/mm/dd'), 33, 9 );
+insert into Book values ('9781530051120', 'Python for Everybody',
+'1st', 5, 'English', to_date('2016/09/02','yyyy/mm/dd'), 247, 7);
+insert into Book values ('9782278083404', 'Vocabulaire essentiel du francais',
+'2nd', 8, 'French', to_date('2015/10/15','yyyy/mm/dd'), 239, 5);
+insert into Book values ('9780132350884', 'Clean Code: A Handbook of Agile Software Craftsmanship',
+null, 9, 'English', to_date('2008/08/01','yyyy/mm/dd'), 464, 7);
+insert into Book values ('9780135974445', 'Agile Software Development, Principles, Patterns, and Practices',
+null, 9, 'English', to_date('2002/08/25','yyyy/mm/dd'), 552, 7);
+insert into Book values ('9780131857254', 'Agile Principles, Patterns, and Practices in C#',
+null, 9, 'English', to_date('2006/07/20','yyyy/mm/dd'), 768, 7);
+insert into Book values ('9780201709377', 'Extreme Programming in Practice',
+null, 10, 'English', to_date('2006/07/20','yyyy/mm/dd'), 224, 7);
+insert into Book values ('9781511654944', 'Introduction to Networking: How the Internet Works',
+'1st', 5, 'English', to_date('2015/04/29','yyyy/mm/dd'), 112, 1);
+insert into Book values ('9798773225324', 'Introduction to Algorithms Book',
+'3rd', 4, 'English', to_date('2021/11/24','yyyy/mm/dd'), 37, 1);
+insert into Book values ('9781107186125', 'Principles of Database Management: The Practical Guide to Storing, Managing and Analyzing Big and Small Data',
+'1st', 3, 'English', to_date('2018/07/12','yyyy/mm/dd'), 808, 1);
+insert into Book values ('9781785945298', 'A Perfect Planet',
+'3rd',11, 'English', to_date('2020/10/20','yyyy/mm/dd'), 324, 2);
+insert into Book values ('9780008477820', 'Living Planet',
+'3rd',11, 'English', to_date('2020/10/20','yyyy/mm/dd'), 338, 2);
+
+--Populate Media table
+
+insert into Media values('25698345', 'Blue Planet II ', '2nd', 7, 'English', 'DVD', '6hour 40min',
+to_date('2017/04/15','yyyy/mm/dd'), 10);
+insert into Media values('21459876', 'Walking Through History', '3rd', 7, 'English', 'DVD', '4hour 40min',
+to_date('2015/01/01','yyyy/mm/dd'), 11);
+insert into Media values('65987412', 'Introduction to Number Theory', '1st', 6, 'English', 'DVD', '2hour 51min',
+to_date('2015/05/04','yyyy/mm/dd'), 1);
+insert into Media values('78954632', 'AS Biology Revision', '1st', 6, 'English', 'CD', '2hour 51min',
+to_date('2006/08/09','yyyy/mm/dd'), 10);
+insert into Media values('15623586', 'Italian Short Stories for Beginners', '1st', 8, 'Italian', 'CD', '6hour 19min',
+to_date('2006/04/03','yyyy/mm/dd'), 6);
+insert into Media values('25698254', 'The Penguin King', '1st', 7, 'English', 'DVD', '5hour 40min',
+to_date('2020/02/04','yyyy/mm/dd'), 10);
+insert into Media values('25691234', 'Seven Worlds, One Planet', '2st', 7, 'English', 'DVD', '4hour 45min',
+to_date('2019/04/15','yyyy/mm/dd'), 10);
+insert into Media values('25699874', 'David Attenborough The Definitive Collection Natural History Museum Alive, Galapagos, Micro Monsters', '1st', 7, 'English', 'DVD', '7hour 30min',
+to_date('2019/04/22','yyyy/mm/dd'), 10);
+
+--Populate ResourceAuthor table
+
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9783319508528', null, 1);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9780131934818',  null, 2);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9780335215041',  null, 3);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9798537197515',  null, 4);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9798558182569',  null, 5);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9781530051120', null, 6);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9782278083404', null, 7);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9782278083404', null, 8);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values (null, '25698345', 9);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values (null,'21459876', 10);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values (null,'65987412', 11);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values (null,'78954632', 12);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values (null,'15623586', 13);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9780132350884', null, 14);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9780135974445', null, 14);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9780131857254', null, 14);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9780131857254', null, 15);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9780201709377', null, 14);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9780201709377', null, 16);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9781511654944', null, 6);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9798773225324', null, 17);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9781107186125', null, 18);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9781107186125', null, 19);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9781785945298', null, 9);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values ('9780008477820', null, 9);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values (null, '25698254',9);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values (null, '25691234',9);
+insert into ResourceAuthor(ISBN, ISSN, AuthorId) values (null, '25699874',9);
+
+--Populate PostCode table
+
+insert into PostCodes values('EC2A 3LX', 'London', 'United Kingdom');
+insert into PostCodes values('E14 3NE', 'London', 'United Kingdom');
+insert into PostCodes values('WC2A 3HP', 'London', 'United Kingdom');
+insert into PostCodes values('SW7 2LQ', 'London', 'United Kingdom');
+insert into PostCodes values('SW5 0PT', 'London', 'United Kingdom');
+insert into PostCodes values('E14 5EZ', 'London', 'United Kingdom');
+insert into PostCodes values('SW3 2BX', 'London', 'United Kingdom');
+insert into PostCodes values('SW12 9BN', 'London', 'United Kingdom');
+
+--Populate Address table
+
+insert into Address (Street, Building, Flat, Postcode) values('32 Rivington St', 'Alto', '16', 'EC2A 3LX');
+insert into Address (Street, Building, Flat, Postcode) values('3 Glengall Grove', 'Redhouse', '67', 'E14 3NE');
+insert into Address (Street, Building, Flat, Postcode) values('2 Gate St', 'Blithehale Court', '112', 'WC2A 3HP');
+insert into Address (Street, Building, Flat, Postcode) values('41 Thurloe St', 'Canada Gardens', '54', 'SW7 2LQ');
+insert into Address (Street, Building, Flat, Postcode) values('20-22 Hogarth Rd', 'Goliath Bank', null, 'SW5 0PT');
+insert into Address (Street, Building, Flat, Postcode) values('30 S Colonnade', 'Main Library', null, 'E14 5EZ');
+insert into Address (Street, Building, Flat, Postcode) values('17-19 Egerton Terrace', 'Jeremy Bentham Library', null, 'SW3 2BX');
+insert into Address (Street, Building, Flat, Postcode) values('134 Balham High Rd', 'Balham Library', null, 'SW12 9BN');
+
+--Populate Library table
+
+insert into Lbry (LibraryName, AddressId) values('Main Library', 6);
+insert into Lbry (LibraryName, AddressId) values('Jeremy Bentham Library', 7);
+insert into Lbry (LibraryName, AddressId) values('Balham Library', 8);
+
+--Populate Shelf_location
+
+insert into Shelf_location values('JER72224', 2, 0, 'G.3', 'Mathematics', 'MAT1', 'AJ-AL'); 
+insert into Shelf_location values('BAL82011', 3, 0, 'G.1', 'Anatomy', 'ANAT2', 'ER-ES'); 
+insert into Shelf_location values('BAL65453', 3, 1, 'F1.5', 'Social sciences', 'SOC', 'AA-AB'); 
+insert into Shelf_location values('MAI73772', 1, 2, 'F2.3', 'English Literature', 'ENLIT', 'TH-TI'); 
+insert into Shelf_location values('MAI50994', 1, 3, 'F3.5', 'Self Development', 'SLFDEV', 'PR-PS');
+insert into Shelf_location values('JER71099', 2, 1, 'F1.5', 'Computer Science', 'COMPSCI', 'PY-PZ');
+insert into Shelf_location values('MAI62866', 1, 2, 'F2.3', 'French Language', 'FRLNG', 'VO-VP');
+insert into Shelf_location values('JER73334', 2, 1, 'F1.5', 'Computer Science', 'COMPSCI', 'CL-CO');
+insert into Shelf_location values('JER73534', 2, 1, 'F1.5', 'Computer Science', 'COMPSCI', 'AG-AI');
+insert into Shelf_location values('JER68754', 2, 1, 'F1.5', 'Computer Science', 'COMPSCI', 'EX-FA');
+insert into Shelf_location values('JER68154', 2, 1, 'F1.5', 'Computer Science', 'COMPSCI', 'IN-IM');
+insert into Shelf_location values('JER85154', 2, 1, 'F1.5', 'Computer Science', 'COMPSCI', 'PR-PU');
+insert into Shelf_location values('BAL81111', 3, 0, 'G.1.2', 'Sciences', 'BIO', 'PE-PH');
+insert into Shelf_location values('BAL82121', 3, 0, 'G.1.2', 'Sciences', 'BIO', 'LI-LO');
+insert into Shelf_location values('BAL63799', 3, 4, 'F4.1', 'Biology', 'BIO1', 'BL-BM'); 
+insert into Shelf_location values('MAI36861', 1, 4, 'F4.5', 'History', 'HIST5', 'WA-WE'); 
+insert into Shelf_location values('JER60382', 2, 4, 'F4.3', 'Mathematics', 'MAT3', 'IN-IO'); 
+insert into Shelf_location values('BAL84580', 3, 4, 'F4.1', 'Biology', 'BIO1', 'AS-AT'); 
+insert into Shelf_location values('MAI97814', 1, 4, 'F4.2', 'Italian Language', 'ITLLANG','IT-IU');
+insert into Shelf_location values('BAL64899', 3, 4, 'F4.1', 'Biology', 'BIO1', 'TH-TI');
+insert into Shelf_location values('BAL66999', 3, 4, 'F4.1', 'Biology', 'BIO1', 'SE-SH');
+insert into Shelf_location values('BAL69399', 3, 4, 'F4.1', 'Biology', 'BIO1', 'DA-DE');
+
+--Populate UniqueItem
+
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9783319508528', null, 'JER72224', INTERVAL '14' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9780131934818', null, 'BAL82011', INTERVAL '14' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9780335215041', null, 'BAL65453', INTERVAL '2' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9798537197515', null, 'MAI73772', INTERVAL '2' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9798558182569', null, 'MAI50994', INTERVAL '0' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9781530051120', null, 'JER71099', INTERVAL '14' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9782278083404', null, 'MAI62866', INTERVAL '14' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9780132350884', null, 'JER73334', INTERVAL '2' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9780135974445', null, 'JER73534', INTERVAL '14' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9780131857254', null, 'JER73534', INTERVAL '0' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9780201709377', null, 'JER68754', INTERVAL '14' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9781511654944', null, 'JER68154', INTERVAL '2' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9798773225324', null, 'JER68154', INTERVAL '2' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9781107186125', null, 'JER85154', INTERVAL '0' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9781785945298', null, 'BAL81111', INTERVAL '14' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values ('9780008477820', null, 'BAL82121', INTERVAL '14' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values (null,'25698345',  'BAL63799', INTERVAL '2' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values (null,'21459876',  'MAI36861', INTERVAL '0' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values (null,'65987412',  'JER60382', INTERVAL '2' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values (null,'78954632',  'BAL84580', INTERVAL '2' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values (null,'15623586',  'MAI97814', INTERVAL '14' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values (null,'25698254',  'BAL64899', INTERVAL '14' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values (null,'25691234',  'BAL66999', INTERVAL '2' DAY);
+insert into UniqueItem (ISBN, ISSN, LocationId, Loanduration) values (null,'25699874',  'BAL69399', INTERVAL '0' DAY);
+
+--Populate AccoutType table
+
+insert into AccountType (TypeValue, MaxNoOfResources) values ('Staff', 10);
+insert into AccountType (TypeValue, MaxNoOfResources) values ('Student', 5);
+insert into AccountType (TypeValue, MaxNoOfResources) values ('Teaching Assistant', 10);
+
+-- Populate AccountState table
+
+insert into AccountState (StateValue) values ('Active');
+insert into AccountState (StateValue) values ('Suspended');
+insert into AccountState (StateValue) values ('Closed');
+
+-- Populate Members table
+
+insert into Members values (210457221, 'Chris', 'Hui', to_date('December 23, 1991', 'MONTH DD, YYYY'), 'christopher.slhui@gmail.com', 1, 2);
+insert into Members values (200901222, 'George', 'Smau', to_date('June 27, 1997', 'MONTH DD, YYYY'), 'alexandrudmau@gmail.com', 1, 3);
+insert into Members values (160591543, 'David', 'Nitu', to_date('May 26, 1997', 'MONTH DD, YYYY'), 'nitu.david97@yahoo.com', 1, 2);
+insert into Members values (120381301, 'Evelina', 'Sargsyan', to_date('November 21, 1995', 'MONTH DD, YYYY'), 'placeholder@gmail.com', 1, 1);
+insert into Members values (397674890, 'Tom', 'Cruise', to_date('July 03, 1962', 'MONTH DD, YYYY'), 'tom.cruise@iscool.com', 1, 3);
+insert into Members values (112318907, 'Ralph', 'Finnes', to_date('August 12, 1997', 'MONTH DD, YYYY'), 'ralph.finnes@test.com', 1, 2);
+insert into Members values (112318905, 'Brad', 'Pitt', to_date('July 04, 1967', 'MONTH DD, YYYY'), 'brad.pitt@test.com', 3, 2);
+
+-- Populate Student table
+
+insert into Student values (210457221, 'Computer Science', 'MSc', '1');
+insert into Student values (200901222, 'Medicine', 'BSc','3');
+insert into Student values (160591543, 'Human Rights', 'PhD', '5');
+insert into Student values (397674890, 'Drama', 'BA','2');
+insert into Student values (112318907, 'Construction Management', 'BSc','3');
+insert into Student values (112318905, 'Mathematics', 'PhD', null);
+
+-- Populate Staff table
+
+insert into Staff values (120381301, 'Life Sciences', 'Librarian', 29000, 'N');
+insert into Staff values (200901222, 'Social Sciences', 'Librarian', 25000, 'Y');
+insert into Staff values (397674890, 'Life Sciences', 'Librarian', 15000, 'Y');
+
+-- Populate PhoneNumber table
+
+insert into PhoneNumber values(210457221, '+44', '70 5927 8831', 'home');
+insert into PhoneNumber values(210457221, '+44', '70 5927 8831', 'work');
+insert into PhoneNumber values(200901222, '+39', '360 7042947', 'home');
+insert into PhoneNumber values(200901222, '+420','582 391 334', 'home');
+insert into PhoneNumber values(160591543, '+44', '79 8001 9124', 'work');
+insert into PhoneNumber values(120381301, '+40', '254 308085', 'work');
+insert into PhoneNumber values(112318907, '+44', '71 8451 9384', 'home');
+insert into PhoneNumber values(112318905, '+40', '215 317095', 'work');
+
+-- Populate MemberAddress table
+
+insert into MemberAddress values(200901222, 1, 'Home');
+insert into MemberAddress values(200901222, 6, 'Work');
+insert into MemberAddress values(397674890, 2, 'Home');
+insert into MemberAddress values(397674890, 8, 'Work');
+insert into MemberAddress values(120381301, 2, 'Home');
+insert into MemberAddress values(120381301, 8, 'Work');
+insert into MemberAddress values(160591543, 3, 'Home');
+insert into MemberAddress values(112318907, 3, 'Home');
+insert into MemberAddress values(210457221, 4, 'Term-time');
+insert into MemberAddress values(112318905, 5, 'Work');
+
+-- Populate Lbry_Access table by execution grantLibraryAccess procedure
+
+execute grantLibraryAccess(210457221, 1);
+execute grantLibraryAccess(210457221, 2);
+execute grantLibraryAccess(210457221, 3);
+execute grantLibraryAccess(200901222, 1);
+execute grantLibraryAccess(200901222, 2);
+execute grantLibraryAccess(200901222, 3);
+execute grantLibraryAccess(160591543, 1);
+execute grantLibraryAccess(160591543, 2);
+execute grantLibraryAccess(160591543, 3);
+execute grantLibraryAccess(120381301, 1);
+execute grantLibraryAccess(120381301, 2);
+execute grantLibraryAccess(120381301, 3);
+execute grantLibraryAccess(397674890, 1);
+execute grantLibraryAccess(397674890, 2);
+execute grantLibraryAccess(112318907, 3);
+
+-- Insert old dates into loan and pay the fines so that overdue loan table is pupulated
+insert into Loan  values (120381301, 1, TIMESTAMP '2021-11-14 11:14:00', null);
+insert into Loan  values (120381301, 2, TIMESTAMP '2021-11-15 10:34:00', null);
+execute payFines(120381301);
+-- In order to have different payment dates, wait one minute before running the next sections.
+-- The payments are recorded to the minute, but not to the second, so if two payments are made 
+-- in the same minute they will be grouped as one
+insert into Loan  values (120381301, 3, TIMESTAMP '2021-11-16 11:14:00', null);
+insert into Loan  values (120381301, 4, TIMESTAMP '2021-11-17 10:34:00', null);
+execute payFines(120381301);
+-- In order to have different payment dates, wait one minute before running the next sections.
+-- The payments are recorded to the minute, but not to the second, so if two payments are made 
+-- in the same minute they will be grouped as one
+insert into Loan  values (160591543, 6, TIMESTAMP '2021-11-18 11:14:00', null);
+insert into Loan  values (160591543, 7, TIMESTAMP '2021-11-19 10:34:00', null);
+execute payFines(160591543);
+-- In order to have different payment dates, wait one minute before running the next sections.
+-- The payments are recorded to the minute, but not to the second, so if two payments are made 
+-- in the same minute they will be grouped as one
+insert into Loan  values (160591543, 8, TIMESTAMP '2021-11-20 11:14:00', null);
+insert into Loan  values (160591543, 9, TIMESTAMP '2021-11-21 10:34:00', null);
+execute payFines(160591543);
+
+-- Insert active overdue loans by inserting loans with an old start date and performing a daily update
+insert into Loan  values (120381301, 11, TIMESTAMP '2021-11-22 11:14:00', null);
+insert into Loan  values (120381301, 12, TIMESTAMP '2021-11-23 10:34:00', null);
+insert into Loan  values (160591543, 13, TIMESTAMP '2021-11-24 11:14:00', null);
+insert into Loan  values (160591543, 15, TIMESTAMP '2021-11-25 10:34:00', null);
+execute dailyUpdate;
+
+-- Generating returned loaned entries by loaning an item and imediately returning it
+execute loanItem(1,210457221);
+execute loanItem(2,210457221);
+execute loanItem(3,210457221);
+execute returnLoan(1);
+execute returnLoan(2);
+execute returnLoan(3);
+
+-- insert active loans into loan table
+execute loanItem(1,210457221);
+execute loanItem(2,210457221);
+execute loanItem(3,210457221);
+execute loanItem(4,200901222);
+execute loanItem(6,200901222);
+execute loanItem(7,200901222);
